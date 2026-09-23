@@ -1,9 +1,12 @@
 // src/services/api.ts
 import axios from 'axios';
 
-// Reemplaza con la URL del API que provee el docente cuando esté disponible.
-// Mientras tanto, usamos JSON Server en local (ver README / clase-07.md).
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+const BASE_URL = configuredApiUrl || (import.meta.env.DEV ? 'http://localhost:3001' : '');
+
+if (!BASE_URL) {
+  throw new Error('VITE_API_URL debe configurarse para ejecutar el frontend en producción.');
+}
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
